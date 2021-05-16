@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Day.crm.workbench.dao.ActivityDao">
+
+    <insert id="save" >
+        insert into tbl_activity(id,owner,name,startDate,endDate,cost,description,createTime,createBy)
+        values (#{id},#{owner},#{name},#{startDate},#{endDate},#{cost},#{description},#{createTime},#{createBy})
+    </insert>
+
+    <!--获取total-->
+    <select id="getTotalByCondition"  resultType="int">
+        select count(*)
+        from tbl_activity a
+        join tbl_user u
+        on a.owner=u.id
+
+        <where>
+            <if test="name!=null and name!=''">
+                a.name like '%' #{name} '%'
+            </if>
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+            <if test="startDate!=null and startDate!=''">
+                and a.startDate &gt; #{startDate}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                and a.endDate &lt; #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <!--获取dataList-->
+    <select id="getActivityListByCondition" resultType="Activity">
+        select a.id,a.name,u.name as owner,a.startDate,a.endDate
+        from tbl_activity a
+        join tbl_user u
+        on a.owner=u.id
+
+        <where>
+            <if test="name!=null and name!=''">
+                a.name like '%' #{name} '%'
+            </if>
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+            <if test="startDate!=null and startDate!=''">
+                and a.startDate &gt; #{startDate}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                and a.endDate &lt; #{endDate}
+            </if>
+        </where>
+        order by a.createTime desc
+        limit #{skipCount},#{pageSize}
+    </select>
+
+    <!--删除市场活动信息-->
+    <delete id="delete">
+        delete from tbl_activity
+        where id in (
+        <foreach collection="array" item="myId">
+            #{myId},
+        </foreach>'0'
+        )
+    </delete>
+
+    <!--市场活动修改页展示-->
+    <select id="getActivityByActivityId" resultType="Activity">
+        select * from tbl_activity where id=#{id}
+    </select>
+
+    <!--市场活动修改操作-->
+    <update id="update">
+        update tbl_activity set
+            owner = #{owner},
+            name = #{name},
+            startDate = #{startDate},
+            endDate = #{endDate},
+            cost = #{cost},
+            description = #{description},
+            editTime = #{editTime},
+            editBy = #{editBy}
+          where id=#{id}
+
+
+    </update>
+
+    <!--市场活动信息详情信息展示-->
+    <select id="detail" resultType="Activity">
+        select
+        a.id,
+        u.name as owner,
+        a.name,
+        a.startDate,
+        a.endDate,
+        a.cost,
+        a.description,
+        a.createTime,
+        a.createBy,
+        a.editTime,
+        a.editBy
+
+        from tbl_activity a
+        join tbl_user u
+        on a.owner=u.id
+        where a.id=#{id}
+    </select>
+
+    <!--线索备注展示-->
+    <select id="showActivityListByClueId" resultType="Activity">
+        select
+        r.id as id,
+        a.name,
+        a.startDate,
+        a.endDate,
+        u.name as owner
+
+        from tbl_activity a
+        join tbl_user u
+        on a.owner = u.id
+        join tbl_clue_activity_relation r
+        on a.id = r.activityId
+        where r.clueId=#{id}
+
+    </select>
+
+    <!--模糊查询市场活动信息-->
+    <select id="getActivityListByNameAndNotByClueId" resultType="Activity">
+        select
+        a.id,
+        a.name,
+        a.startDate,
+        a.endDate,
+        u.name as owner
+        from tbl_activity a
+        join tbl_user u
+        on a.owner = u.id
+        where a.name like '%' #{aname} '%' and a.id not in(
+
+              select activityId from tbl_clue_activity_relation
+              where clueId=#{clueId}
+        )
+    </select>
+
+    <!--模糊查询市场活动信息(通过名字)-->
+    <select id="getActivityListByName" resultType="Activity">
+        select
+        a.id,
+        u.name as owner,
+        a.startDate,
+        a.endDate,
+        a.name
+        from tbl_activity a
+        join tbl_user u
+        on a.owner = u.id
+        where a.name like '%' #{ename} '%'
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

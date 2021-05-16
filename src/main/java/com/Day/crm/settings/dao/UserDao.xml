@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Day.crm.settings.dao.UserDao">
+
+    <!--通过账号密码来提取信息-->
+    <select id="selectLogin" resultType="User">
+      select id, loginAct, name, loginPwd, email, expireTime, lockState, deptno, allowIps, createTime, createBy, editTime, editBy
+      from tbl_user where loginAct=#{username} and loginPwd=#{password}
+
+    </select>
+
+    <!--查询所有user信息-->
+    <select id="getUserList" resultType="User">
+      select id, loginAct, name, loginPwd, email, expireTime, lockState, deptno, allowIps, createTime, createBy, editTime, editBy
+      from tbl_user;
+    </select>
+</mapper>
