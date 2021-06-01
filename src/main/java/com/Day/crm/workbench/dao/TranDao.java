@@ -15,5 +15,6 @@ public interface TranDao {
 
     int getCount();
 
+    //返回List里套的Map
     List<Map<String, Object>> getStageAndCount();
 }
