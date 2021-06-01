@@ -202,6 +202,7 @@ public class ActivityController extends HttpServlet {
 
         //略过的个数
         int skipCount = (pageNo - 1)*pageSize;
+
         Map<String,Object> map = new HashMap();
         map.put("name",name);
         map.put("owner",owner);

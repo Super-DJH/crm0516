@@ -138,6 +138,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 			$("#qx").prop("checked",$("input[name=xz]").length==$("input[name=xz]:checked").length)
 		})
 
+
 		//为删除按钮绑定单击事件
 		$("#deleteBtn").click(function () {
 			//先拿到要删除的id
