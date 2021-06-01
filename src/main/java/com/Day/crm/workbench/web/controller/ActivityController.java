@@ -75,6 +75,7 @@ public class ActivityController extends HttpServlet {
         map.put("success",result);
         map.put("ar",ar);
         PrintJson.printJsonObj(response,map);
+        System.out.println("--");
     }
 
     private void saveRemark(HttpServletRequest request, HttpServletResponse response) {
@@ -178,7 +179,7 @@ public class ActivityController extends HttpServlet {
 
     private void delete(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("进入到市场活动信息删除操作");
-        String ids[]= request.getParameterValues("id");
+        String[] ids= request.getParameterValues("id");
 
         ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
         boolean result = as.delete(ids);
@@ -203,7 +204,7 @@ public class ActivityController extends HttpServlet {
         //略过的个数
         int skipCount = (pageNo - 1)*pageSize;
 
-        Map<String,Object> map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("name",name);
         map.put("owner",owner);
         map.put("startDate",startDate);

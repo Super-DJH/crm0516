@@ -19,6 +19,7 @@ public class ActivityTest {
 
         ActivityService as = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
         int result = as.save(activity);
-        Assert.assertEquals(1,result);
+        Assert.assertEquals(2,result);
+        System.out.println("完成修改");
     }
 }
